@@ -1,0 +1,151 @@
+{
+  "name": "Lead Generation Agency",
+  "version": "1.0",
+  "description": "Full-stack lead generation agency targeting B2B SaaS companies",
+
+  "roles": [
+    "Strategy",
+    "Lead_Research",
+    "Outreach",
+    "Sales",
+    "Delivery",
+    "Finance",
+    "Support"
+  ],
+
+  "tools": [
+    "stripe",
+    "apollo",
+    "lemlist",
+    "hubspot",
+    "gmail",
+    "linkedin"
+  ],
+
+  "initial_prompt": "Create a lead generation agency targeting B2B SaaS companies with $25k MRR in 90 days",
+
+  "agent_instructions": {
+    "Strategy": {
+      "role": "CEO",
+      "responsibilities": [
+        "Define target market segments",
+        "Create service offerings",
+        "Set pricing per lead tier",
+        "Create business model"
+      ]
+    },
+    "Lead_Research": {
+      "role": "Research Lead",
+      "responsibilities": [
+        "Identify target companies",
+        "Research decision makers",
+        "Create prospect lists",
+        "Validate lead quality"
+      ]
+    },
+    "Outreach": {
+      "role": "Outreach Manager",
+      "responsibilities": [
+        "Write cold email sequences",
+        "Execute LinkedIn outreach",
+        "Follow up with prospects",
+        "Track response rates"
+      ]
+    },
+    "Sales": {
+      "role": "Sales Manager",
+      "responsibilities": [
+        "Close agency deals",
+        "Create service contracts",
+        "Negotiate pricing",
+        "Manage sales pipeline"
+      ]
+    },
+    "Delivery": {
+      "role": "Delivery Manager",
+      "responsibilities": [
+        "Quality check leads",
+        "Deliver leads on schedule",
+        "Handle client feedback",
+        "Optimize for quality"
+      ]
+    },
+    "Finance": {
+      "role": "CFO",
+      "responsibilities": [
+        "Setup billing system",
+        "Create pricing model",
+        "Track cost per lead",
+        "Manage cash flow"
+      ]
+    },
+    "Support": {
+      "role": "Support Lead",
+      "responsibilities": [
+        "Handle client inquiries",
+        "Resolve issues quickly",
+        "Create knowledge base",
+        "Improve processes"
+      ]
+    }
+  },
+
+  "integrations": {
+    "stripe": {
+      "required": true,
+      "setup": "Billing and invoicing",
+      "permissions": ["manage_subscriptions", "create_invoice"]
+    },
+    "apollo": {
+      "required": true,
+      "setup": "Lead database API",
+      "permissions": ["search_contacts", "export_lists"]
+    },
+    "lemlist": {
+      "required": true,
+      "setup": "Email outreach",
+      "permissions": ["send_campaign", "track_opens"]
+    },
+    "hubspot": {
+      "required": true,
+      "setup": "CRM for deals",
+      "permissions": ["create_deal", "update_contact"]
+    }
+  },
+
+  "verification_rules": [
+    {
+      "action": "export_leads",
+      "min_confidence": 85,
+      "requires_approval": true
+    },
+    {
+      "action": "send_outreach",
+      "min_confidence": 75,
+      "requires_approval": false
+    },
+    {
+      "action": "invoice_client",
+      "min_confidence": 95,
+      "requires_approval": true
+    }
+  ],
+
+  "success_metrics": {
+    "week_1": {
+      "target": "First 5 prospects",
+      "milestone": "Setup complete, first outreach sent"
+    },
+    "week_4": {
+      "target": "First customer / $2,500 MRR",
+      "milestone": "First lead delivery"
+    },
+    "week_12": {
+      "target": "$25,000 MRR / 10 customers",
+      "milestone": "Agency at scale"
+    }
+  },
+
+  "timeline": "90 days",
+  "difficulty": "advanced"
+}

@@ -1,0 +1,151 @@
+{
+  "name": "Premium Newsletter",
+  "version": "1.0",
+  "description": "Full-stack newsletter business template targeting indie hackers",
+
+  "roles": [
+    "Strategy",
+    "Content",
+    "SEO",
+    "Marketing",
+    "Sales",
+    "Finance",
+    "Support"
+  ],
+
+  "tools": [
+    "stripe",
+    "convertkit",
+    "twitter",
+    "linkedin",
+    "gmail",
+    "analytics"
+  ],
+
+  "initial_prompt": "Create a premium newsletter business targeting indie hackers with $15k MRR in 90 days",
+
+  "agent_instructions": {
+    "Strategy": {
+      "role": "Chief Strategist",
+      "responsibilities": [
+        "Define unique value proposition",
+        "Identify target audience segments",
+        "Set pricing strategy",
+        "Create 90-day roadmap"
+      ]
+    },
+    "Content": {
+      "role": "Content Creator",
+      "responsibilities": [
+        "Write launch emails",
+        "Create welcome sequence",
+        "Produce sample newsletter issues",
+        "Draft swipe files for marketing"
+      ]
+    },
+    "SEO": {
+      "role": "SEO Specialist",
+      "responsibilities": [
+        "Optimize landing page copy",
+        "Research high-intent keywords",
+        "Create SEO content calendar",
+        "Setup Google Search Console"
+      ]
+    },
+    "Marketing": {
+      "role": "Growth Marketing",
+      "responsibilities": [
+        "Launch Twitter campaign",
+        "Execute cold email outreach",
+        "Create LinkedIn strategy",
+        "Setup affiliate program"
+      ]
+    },
+    "Sales": {
+      "role": "Sales Representative",
+      "responsibilities": [
+        "Create sales process",
+        "Draft sales copy",
+        "Setup sales calendar",
+        "Create objection handlers"
+      ]
+    },
+    "Finance": {
+      "role": "Chief Financial Officer",
+      "responsibilities": [
+        "Setup Stripe account",
+        "Create pricing model",
+        "Build financial projections",
+        "Setup payment automation"
+      ]
+    },
+    "Support": {
+      "role": "Customer Support",
+      "responsibilities": [
+        "Create FAQ document",
+        "Build support templates",
+        "Setup email responses",
+        "Create escalation procedures"
+      ]
+    }
+  },
+
+  "integrations": {
+    "stripe": {
+      "required": true,
+      "setup": "Collect Stripe API key",
+      "permissions": ["read_balance", "create_charge", "manage_customers"]
+    },
+    "convertkit": {
+      "required": true,
+      "setup": "Connect ConvertKit account",
+      "permissions": ["create_subscriber", "send_email", "manage_forms"]
+    },
+    "twitter": {
+      "required": true,
+      "setup": "Connect Twitter app",
+      "permissions": ["post_tweet", "follow_user", "like_tweet"]
+    },
+    "gmail": {
+      "required": false,
+      "setup": "Generate Gmail app password",
+      "permissions": ["send_email", "read_emails"]
+    }
+  },
+
+  "verification_rules": [
+    {
+      "action": "send_email",
+      "min_confidence": 80,
+      "requires_approval": true
+    },
+    {
+      "action": "post_twitter",
+      "min_confidence": 70,
+      "requires_approval": false
+    },
+    {
+      "action": "charge_customer",
+      "min_confidence": 95,
+      "requires_approval": true
+    }
+  ],
+
+  "success_metrics": {
+    "week_1": {
+      "target": "100 email list subscribers",
+      "milestone": "Landing page live, email sequence ready"
+    },
+    "week_4": {
+      "target": "500 email list subscribers",
+      "milestone": "First 10 paid subscribers"
+    },
+    "week_12": {
+      "target": "$15,000 MRR",
+      "milestone": "250 paid subscribers"
+    }
+  },
+
+  "timeline": "90 days",
+  "difficulty": "intermediate"
+}

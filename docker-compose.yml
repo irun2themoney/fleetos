@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  # Ollama - Local LLM inference
+  ollama:
+    image: ollama/ollama:latest
+    container_name: fleetos_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+    command: serve
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - fleetos_network
+
+  # Redis - Caching & Session Store
+  redis:
+    image: redis:7-alpine
+    container_name: fleetos_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fleetos_network
+
+  # Chroma - Vector Database
+  chroma:
+    image: ghcr.io/chroma-core/chroma:latest
+    container_name: fleetos_chroma
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    environment:
+      - CHROMA_DB_IMPL=duckdb+parquet
+      - CHROMA_ANONYMIZED_TELEMETRY=false
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - fleetos_network
+
+  # FleetOS API & Dashboard
+  fleetos:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fleetos_app
+    ports:
+      - "8501:8501"  # Streamlit dashboard
+      - "8000:8000"  # API server (future)
+    volumes:
+      - .:/app
+      - logs:/app/logs
+      - company_memory:/app/company_memory
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - REDIS_URL=redis://redis:6379/0
+      - CHROMA_API_URL=http://chroma:8000
+      - LOG_LEVEL=INFO
+      - ENVIRONMENT=development
+    depends_on:
+      ollama:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      chroma:
+        condition: service_healthy
+    networks:
+      - fleetos_network
+    command: streamlit run fleetos/dashboard/app.py
+
+volumes:
+  ollama_data:
+  redis_data:
+  chroma_data:
+  logs:
+  company_memory:
+
+networks:
+  fleetos_network:
+    driver: bridge

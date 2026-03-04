@@ -1,0 +1,1 @@
+"""Business templates for FleetOS."""

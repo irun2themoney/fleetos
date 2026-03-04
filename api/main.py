@@ -45,10 +45,11 @@ except ImportError:
 
 # Password hashing
 try:
-    from passlib.context import CryptContext
-    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+    import bcrypt as _bcrypt_lib
+    _bcrypt_available = True
 except ImportError:
-    pwd_context = None  # type: ignore
+    _bcrypt_lib = None  # type: ignore
+    _bcrypt_available = False
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
@@ -91,14 +92,14 @@ _sessions: Dict[str, str] = {}     # token → email
 # ---------------------------------------------------------------------------
 
 def _hash_password(pw: str) -> str:
-    if pwd_context:
-        return pwd_context.hash(pw)
+    if _bcrypt_available:
+        return _bcrypt_lib.hashpw(pw.encode(), _bcrypt_lib.gensalt()).decode()
     import hashlib
     return hashlib.sha256(pw.encode()).hexdigest()
 
 def _verify_password(pw: str, hashed: str) -> bool:
-    if pwd_context:
-        return pwd_context.verify(pw, hashed)
+    if _bcrypt_available:
+        return _bcrypt_lib.checkpw(pw.encode(), hashed.encode())
     import hashlib
     return hashlib.sha256(pw.encode()).hexdigest() == hashed
 

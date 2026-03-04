@@ -357,7 +357,7 @@
 // ============================================================
 const API = window.location.hostname === 'localhost'
   ? 'http://localhost:8000'
-  : '';  // same origin in production
+  : 'https://fleetos-api.onrender.com';  // backend API service
 
 let _token = localStorage.getItem('fleetos_token');
 let _user  = JSON.parse(localStorage.getItem('fleetos_user') || 'null');

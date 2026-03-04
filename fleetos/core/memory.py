@@ -185,3 +185,32 @@ class MemoryManager:
 # TODO: Phase 2 - Add Ollama embeddings
 # TODO: Phase 3 - Integrate GraphRAG for knowledge graph
 # TODO: Phase 3 - Add data validation and cleanup routines
+
+
+class Memory(MemoryManager):
+    """
+    Alias for MemoryManager with an updated store_artifact signature
+    compatible with the Phase 2 graph node.
+
+    store_artifact(role, content, session_id) → artifact_id
+    """
+
+    def store_artifact(
+        self,
+        role: str = "",
+        content: str = "",
+        session_id: str = "",
+        artifact_type: str = "",
+        metadata: dict = None,
+    ) -> str:
+        """
+        Overloaded to accept both the old (artifact_type, content) and
+        new (role, content, session_id) signatures.
+        """
+        _type = artifact_type or role or "artifact"
+        _meta = metadata or {"role": role, "session_id": session_id}
+        return super().store_artifact(
+            artifact_type=_type,
+            content=content,
+            metadata=_meta,
+        )

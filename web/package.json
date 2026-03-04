@@ -1,0 +1,8 @@
+{
+  "name": "fleetos-web",
+  "version": "1.0.0",
+  "description": "FleetOS web frontend",
+  "scripts": {
+    "build": "echo 'Static site - no build needed'"
+  }
+}

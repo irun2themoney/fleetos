@@ -362,7 +362,7 @@ class _FallbackRunner:
         state = parse_command(state)
         state = plan_fleet(state)
         state = verify_plan(state)
-        state = asyncio.get_event_loop().run_until_complete(execute_parallel(state))
+        state = asyncio.run(execute_parallel(state))
         state = collect_artifacts(state)
         state = store_memory(state)
         state = report(state)
